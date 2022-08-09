@@ -118,7 +118,7 @@
           addMarker(j, mD2[j]);
           var name = mD2[j]['名称'];
 
-          sidebar_html += `<b>${j + 1}</b> <a href="javascript:openWindow(${j})">${name}<\/a><br />`;
+          sidebar_html += `<b>${i + j + 1}</b> <a href="javascript:openWindow(${j})">${name}<\/a><br />`;
         }
 
         document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br /><br />` + sidebar_html;
