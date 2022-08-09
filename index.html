@@ -132,11 +132,11 @@
           var name = mD1[i]['名称'];
           sidebar_html += `<b>${i + 1}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
         }
-	console.print(sidebar_html);
+	console.log(sidebar_html);
       }
 	    
       function setData2(mD2){
-	sidebar_html += '<br />---<br />';
+	sidebar_html += '---<br />';
         for (var i = 0; i < mD2.length; i++) {
           var latitude = mD2[i]['緯度'];
           if (!latitude) { continue; }
@@ -144,7 +144,7 @@
 	  var name = mD2[i]['名称'];
           sidebar_html += `<b>${i + 101}</b> <a href="javascript:openWindow(${i+100})">${name}<\/a><br />`;
         }
-	console.print(sidebar_html);	      
+	console.log(sidebar_html);	      
         document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br />---<br />` + sidebar_html;
       }
 
