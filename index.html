@@ -68,6 +68,7 @@
         request1.onload = function () {
           var data = this.response;
           var markerData1 = parseData(data);
+	  setData(markerData1);
         };
 	
 	var request2 = new XMLHttpRequest();
@@ -77,9 +78,8 @@
         request2.onload = function () {
           var data = this.response;
           var markerData2 = parseData(data);
+	  setData2(markerData2);
         };
-	setData2(markerData2);
-	setData(markerData1);
 	      
         request2.send();
 	request1.send();
@@ -140,7 +140,10 @@
           var latitude = mD2[i]['緯度'];
           if (!latitude) { continue; }
           addMarker2(i, mD2[i]);
-	}
+	  var name = mD1[i]['名称'];
+          sidebar_html += `<b>${i + 1}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
+        }
+        document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br /><br />` + sidebar_html;
       }
 
       function markerEvent(i) {
