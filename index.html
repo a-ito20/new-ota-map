@@ -110,18 +110,18 @@
           lat: Number(data['緯度']),
           lng: Number(data['経度'])
         });
-        marker[i] = new google.maps.Marker({
+        marker[i+100] = new google.maps.Marker({
           position: markerLatLng,
           map: map,
 	  icon: 'human.jpg'
         });
 
         var info = '<div style="font-size:18px;font-weight:bold;margin-bottom:10px;">' + data['名称'] + '</div>';
-        infoWindow[i] = new google.maps.InfoWindow({
+        infoWindow[i+100] = new google.maps.InfoWindow({
           content: info
         });
 
-        markerEvent(i);
+        markerEvent(i+100);
       }
 
       function setData(mD1){
