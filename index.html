@@ -36,7 +36,7 @@
       var marker = [];
       var infoWindow = [];
       var windowOpened;
-      var sidebar_html = [];
+      var sidebar_html = "";
 
 
       function parseData(data) {
@@ -125,7 +125,6 @@
       }
 
       function setData(mD1){
-        var sidebar_html = "";
         for (var i = 0; i < mD1.length; i++) {
           var latitude = mD1[i]['緯度'];
           if (!latitude) { continue; }
@@ -133,12 +132,9 @@
           var name = mD1[i]['名称'];
           sidebar_html += `<b>${i + 1}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
         }
-	      
-//         document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br /><br />` + sidebar_html;
       }
 	    
       function setData2(mD2){
-        var sidebar_html = "";
         for (var i = 0; i < mD2.length; i++) {
           var latitude = mD2[i]['緯度'];
           if (!latitude) { continue; }
