@@ -61,17 +61,28 @@
           zoom: 14,
         });
 
-        var request = new XMLHttpRequest();
-        request.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/sheet1?key=${API_KEY}`, true);
-        request.responseType = 'json';
+        var request1 = new XMLHttpRequest();
+        request1.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/sheet1?key=${API_KEY}`, true);
+        request1.responseType = 'json';
 
-        request.onload = function () {
+        request1.onload = function () {
+          var data = this.response;
+          var markerData = parseData(data);
+          setData(markerData);
+        };
+	
+	var request2 = new XMLHttpRequest();
+        request2.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/sheet2?key=${API_KEY}`, true);
+        request2.responseType = 'json';
+
+        request2.onload = function () {
           var data = this.response;
           var markerData = parseData(data);
           setData(markerData);
         };
 
-        request.send();
+        request1.send();
+	request2.send();
       }
 
       function addMarker(i, data) {
