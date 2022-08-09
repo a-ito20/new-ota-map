@@ -72,7 +72,8 @@
           var markerData1 = parseData(data);
 	  setData(markerData1);
         };
-	
+	request1.send();
+	      
 	var request2 = new XMLHttpRequest();
         request2.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/sheet2?key=${API_KEY}`, true);
         request2.responseType = 'json';
@@ -82,9 +83,7 @@
           var markerData2 = parseData(data2);
 	  setData2(markerData2);
         };
-	      	      
-	request2.send();      
-	request1.send();
+	request2.send();
       }
 
       function addMarker(i, data) {
