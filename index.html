@@ -67,7 +67,7 @@
 
         request1.onload = function () {
           var data = this.response;
-          var markerData1 = parseData(data);
+          markerData1 = parseData(data);
         };
 	
 	var request2 = new XMLHttpRequest();
@@ -76,7 +76,7 @@
 
         request2.onload = function () {
           var data2 = this.response;
-          var markerData2 = parseData(data2);
+          markerData2 = parseData(data2);
         };
 	      
 	setData(markerData1,markerData2)
