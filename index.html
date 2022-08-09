@@ -78,10 +78,11 @@
           var data = this.response;
           var markerData2 = parseData(data);
         };
-	setData(markerData1,markerData2);
+	setData2(markerData2);
+	setData(markerData1);
 	      
-        request1.send();
-	request2.send();
+        request2.send();
+	request1.send();
       }
 
       function addMarker(i, data) {
@@ -101,8 +102,27 @@
 
         markerEvent(i);
       }
+	    
+      function addMarker2(i, data) {
+        var markerLatLng = new google.maps.LatLng({
+          lat: Number(data['緯度']),
+          lng: Number(data['経度'])
+        });
+        marker[i] = new google.maps.Marker({
+          position: markerLatLng,
+          map: map,
+	  icon: 'human.png'
+        });
 
-      function setData(mD1,mD2){
+        var info = '<div style="font-size:18px;font-weight:bold;margin-bottom:10px;">' + data['名称'] + '</div>';
+        infoWindow[i] = new google.maps.InfoWindow({
+          content: info
+        });
+
+        markerEvent(i);
+      }
+
+      function setData(mD1){
         var sidebar_html = "";
         for (var i = 0; i < mD1.length; i++) {
           var latitude = mD1[i]['緯度'];
@@ -112,16 +132,14 @@
 
           sidebar_html += `<b>${i + 1}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
         }
-        for (var j = 0; j < mD2.length; j++) {
-          var latitude = mD2[j]['緯度'];
-          if (!latitude) { continue; }
-          addMarker(j, mD2[j]);
-          var name = mD2[j]['名称'];
-
-          sidebar_html += `<b>${i + j + 1}</b> <a href="javascript:openWindow(${j})">${name}<\/a><br />`;
-        }
-
         document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br /><br />` + sidebar_html;
+      }
+	    
+      function setData2(mD2){
+        for (var i = 0; i < mD2.length; i++) {
+          var latitude = mD2[i]['緯度'];
+          if (!latitude) { continue; }
+          addMarker2(i, mD2[i]);
       }
 
       function markerEvent(i) {
