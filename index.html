@@ -140,7 +140,7 @@
           if (!latitude) { continue; }
           addMarker2(i, mD2[i]);
 	  var name = mD2[i]['名称'];
-          sidebar_html += `<b>${i + 101}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
+          sidebar_html += `<b>${i + 101}</b> <a href="javascript:openWindow(${i+100})">${name}<\/a><br />`;
         }
         document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br /><br />` + sidebar_html;
       }
