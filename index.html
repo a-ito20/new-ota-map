@@ -109,13 +109,20 @@
           lat: Number(data['緯度']),
           lng: Number(data['経度'])
         });
-        marker[i+100] = new google.maps.Marker({
-          position: markerLatLng,
-          map: map,
-	  icon: 'human2.png'
-        });
-
-        var info = '<div style="font-size:18px;font-weight:bold;margin-bottom:10px;">' + data['名称'] + '</div>';
+	if (i == 3) {
+	    marker[i+100] = new google.maps.Marker({
+            position: markerLatLng,
+            map: map,
+	    icon: 'arai.png'
+            });
+	} else {
+	    marker[i+100] = new google.maps.Marker({
+            position: markerLatLng,
+            map: map,
+	    icon: 'human2.png'
+            });
+	};
+	var info = '<div style="font-size:18px;font-weight:bold;margin-bottom:10px;">' + data['名称'] + '</div>';
         infoWindow[i+100] = new google.maps.InfoWindow({
           content: info
         });
