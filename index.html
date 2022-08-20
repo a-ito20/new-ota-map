@@ -87,7 +87,7 @@
         request2.onload = async function () {
           var data2 = this.response;
           var markerData2 = parseData(data2);
-	  await sleep(3000);  
+	  await sleep(1000);  
 	  setData2(markerData2);
         };
 	request2.send();
@@ -98,6 +98,9 @@
           lat: Number(data['緯度']),
           lng: Number(data['経度'])
         });
+　      console.log(i);
+　      console.log(data);	      
+　      console.log(data['名称']);
         marker[i] = new google.maps.Marker({
           position: markerLatLng,
           map: map
