@@ -98,12 +98,10 @@
           lat: Number(data['緯度']),
           lng: Number(data['経度'])
         });
-　      console.log(i);
-　      console.log(data);	      
-　      console.log(data['名称']);
         marker[i] = new google.maps.Marker({
           position: markerLatLng,
-          map: map
+          map: map,
+	  icon: data['img']
         });
 
         var info = '<div style="font-size:18px;font-weight:bold;margin-bottom:10px;">' + data['名称'] + '</div>';
@@ -148,7 +146,6 @@
           var name = mD1[i]['名称'];
           sidebar_html += `<b>${i + 1}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
         }
-	console.log(sidebar_html);
       }
 	    
       function setData2(mD2){
