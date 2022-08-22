@@ -25,29 +25,62 @@
         font-size: 14px;
         overflow-y: scroll;
       }
+      #target {
+        border: 1px outset gray;
+        width: 1400px;
+        height: 900px;
+      }
+      #tag {
+        font-size: 16px;
+        height: 30px;
+      }
+      #getTag {
+        font-size: 16px;
+        width: 200px;
+        color: #fff;
+        background: green;
+        border-radius: 5px;
+        height: 30px;
+      }
     </style>
   </head>
   <body>
     <div id="map"></div>
+    <div>
+      <select id="tag">
+        <option value="0">0.ALL</option>
+        <option value="1">業務集中</option>
+        <option value="2">通常状態</option>
+        <option value="3">余裕あり</option>
+      </select>
+      <button id="getTag">タグの絞込み</button>
+    </div>
+    <table>
+      <tr>
+        <td><div id="target"></div></td>
+        <td><div id="sidebar"></div></td>
+      </tr>
+    </table>
     <td><div id="sidebar"></div></td>
     <script src="constants.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key=AIzaSyDTTTpdkp4PsAa4mawFgaDtc9sXi84JKJo&callback=initMap" async defer></script>
     <script>
       var map;
       var marker = [];
+      let markerData = [];
       var infoWindow = [];
       var windowOpened;
       var sidebar_html = "";
 
-	function sleep(msec) {
+      function sleep(msec) {
 	   return new Promise(function(resolve) {
 	      setTimeout(function() {resolve()}, msec);
 	   })
-	}
+      }
 
       function parseData(data) {
         var keys = data.values[0];
-        var markerData = [];
+        var markerData1 = [];
         data.values.forEach(function(value, i) {
           if (i > 0) {
             var hash = {};
@@ -68,14 +101,16 @@
           center: centerp,
           zoom: 14,
         });
-
+	      
+	getMapData();
+	      
         var request1 = new XMLHttpRequest();
         request1.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/sheet1?key=${API_KEY}`, true);
         request1.responseType = 'json';
 
         request1.onload = function () {
           var data = this.response;
-          var markerData1 = parseData(data);
+          markerData1 = parseData(data);
 	  setData(markerData1);
         };
 	request1.send();
@@ -93,6 +128,28 @@
 	request2.send();
       }
 
+      function getMapdata(){
+
+        //APIにてデータを取得して、位置とマーカーをセットするfunctionを呼び出す
+        const request = new XMLHttpRequest();
+        const bookid = 'スプレッドシートIDを設定';
+        const sheetname = 'スプレッドシートのシート名を設定';
+        const googleapi = 'GOOGLEAPIを設定';
+        const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + bookid + '/values/' + sheetname + '?key=' + googleapi;
+
+        request.open('GET', url, true);
+        request.responseType = 'json';
+
+        request.onload = function () {
+          const data = this.response;     // 取得できた値を格納
+          markerData = parseData(data);   // Function:データ変換
+          setData(markerData);            // Function:位置とマーカーをセット
+        };
+
+        request.send();
+
+      }	    
+	    
       function addMarker(i, data) {
         var markerLatLng = new google.maps.LatLng({
           lat: Number(data['緯度']),
@@ -144,8 +201,9 @@
           if (!latitude) { continue; }
           addMarker(i, mD1[i]);
           var name = mD1[i]['名称'];
-          sidebar_html += `<b>${i + 1}</b> <a href="javascript:openWindow(${i})">${name}<\/a><br />`;
+          sidebar_html += `<a href="javascript:openWindow(${i})">${name}<\/a><br />`;
         }
+        document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br />---<br />` + sidebar_html;
       }
 	    
       function setData2(mD2){
@@ -154,11 +212,7 @@
           var latitude = mD2[i]['緯度'];
           if (!latitude) { continue; }
           addMarker2(i, mD2[i]);
-	  var name = mD2[i]['名称'];
-          sidebar_html += `<b>${i + 101}</b> <a href="javascript:openWindow(${i+100})">${name}<\/a><br />`;
         }
-	console.log(sidebar_html);	      
-        document.getElementById("sidebar").innerHTML = `<a target="_blank" href="https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?usp=sharing">元データ</a><br />---<br />` + sidebar_html;
       }
 
       function markerEvent(i) {
@@ -174,6 +228,37 @@
         infoWindow[i].open(map, marker[i]);
         windowOpened = infoWindow[i];
       }
+	    
+      // 絞り込みボタンが押下されたとき
+      const tagBtn = document.getElementById('getTag');
+      tagBtn.addEventListener('click', function(){
+        const tag = document.getElementById('tag').value;
+
+        const tagmarkerData = [];
+        let j = 0;
+        for (let i = 0; i < markerData1.length; i++) {
+          if (tag === markerData1[i]['tag'].charAt(0)) {
+            tagmarkerData[j] = markerData[i];
+            j++;
+          }
+          if (tag === '0') {
+            tagmarkerData[i] = markerData[i];
+          }
+        }
+
+        // 地図の初期表示
+        const target = document.getElementById('target');
+        const centerp = {lat: 35.56871, lng: 139.723923};
+	
+        map = new google.maps.Map(target, {
+          center: centerp,
+          zoom: 14,
+        });	      
+
+        // Function:位置とマーカーをセット（タグを絞り込みしたデータ）
+        setData(tagmarkerData);
+      });
+	    
     </script>
   </body>
 </html>
