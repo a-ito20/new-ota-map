@@ -49,16 +49,15 @@
     <div>
       <select id="tag">
         <option value="0">0.ALL</option>
-        <option value="1">業務集中</option>
-        <option value="2">通常状態</option>
-        <option value="3">余裕あり</option>
+        <option value="1">1.業務集中</option>
+        <option value="2">2.通常状態</option>
+        <option value="3">3.余裕あり</option>
       </select>
       <button id="getTag">タグの絞込み</button>
     </div>
     <table>
       <tr>
         <td><div id="target"></div></td>
-        <td><div id="sidebar"></div></td>
       </tr>
     </table>
     <td><div id="sidebar"></div></td>
@@ -102,8 +101,6 @@
           zoom: 14,
         });
 	      
-	getMapData();
-	      
         var request1 = new XMLHttpRequest();
         request1.open('GET', `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/sheet1?key=${API_KEY}`, true);
         request1.responseType = 'json';
@@ -127,28 +124,6 @@
         };
 	request2.send();
       }
-
-      function getMapdata(){
-
-        //APIにてデータを取得して、位置とマーカーをセットするfunctionを呼び出す
-        const request = new XMLHttpRequest();
-        const bookid = 'スプレッドシートIDを設定';
-        const sheetname = 'スプレッドシートのシート名を設定';
-        const googleapi = 'GOOGLEAPIを設定';
-        const url = 'https://sheets.googleapis.com/v4/spreadsheets/' + bookid + '/values/' + sheetname + '?key=' + googleapi;
-
-        request.open('GET', url, true);
-        request.responseType = 'json';
-
-        request.onload = function () {
-          const data = this.response;     // 取得できた値を格納
-          markerData = parseData(data);   // Function:データ変換
-          setData(markerData);            // Function:位置とマーカーをセット
-        };
-
-        request.send();
-
-      }	    
 	    
       function addMarker(i, data) {
         var markerLatLng = new google.maps.LatLng({
@@ -238,11 +213,11 @@
         let j = 0;
         for (let i = 0; i < markerData1.length; i++) {
           if (tag === markerData1[i]['tag'].charAt(0)) {
-            tagmarkerData[j] = markerData[i];
+            tagmarkerData[j] = markerData1[i];
             j++;
           }
           if (tag === '0') {
-            tagmarkerData[i] = markerData[i];
+            tagmarkerData[i] = markerData1[i];
           }
         }
 
