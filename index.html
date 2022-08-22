@@ -7,23 +7,25 @@
       #map {
         height: 100%;
       }
+      #target {
+        border: 1px outset gray;
+        width: 1400px;
+        height: 900px;
+      }	    
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
       #sidebar {
-        position: absolute;
-        top: 10%;
-        left: 72%;
-        width: 25%;
-        height: 40%;
         border: 1px solid #666;
         padding: 6px;
         background-color: white;
         font-family: Meriyo UI;
-        font-size: 14px;
-        overflow-y: scroll;
+        font-size: 12px;
+        overflow: auto;
+        width: 337px;
+        height: 888px;
       }
       #tag {
         font-size: 16px;
@@ -50,7 +52,12 @@
       </select>
       <button id="getTag">タグの絞込み</button>
     </div>
-    <td><div id="sidebar"></div></td>
+    <table>
+      <tr>
+        <td><div id="target"></div></td>
+        <td><div id="sidebar"></div></td>
+      </tr>
+    </table>
     <script src="constants.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?language=ja&region=JP&key=AIzaSyDTTTpdkp4PsAa4mawFgaDtc9sXi84JKJo&callback=initMap" async defer></script>
     <script>
@@ -59,7 +66,6 @@
       let markerData = [];
       var infoWindow = [];
       var windowOpened;
-      var sidebar_html = "";
 
       function sleep(msec) {
 	   return new Promise(function(resolve) {
@@ -84,7 +90,7 @@
       }
 
       function initMap() {
-        var target = document.getElementById('map');
+        var target = document.getElementById('target');
         var centerp = {lat: 35.56871, lng: 139.723923};
 	
         map = new google.maps.Map(target, {
@@ -161,6 +167,7 @@
       }
 
       function setData(mD1){
+        var sidebar_html = "";
         for (var i = 0; i < mD1.length; i++) {
           var latitude = mD1[i]['緯度'];
           if (!latitude) { continue; }
