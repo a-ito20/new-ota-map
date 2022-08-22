@@ -77,19 +77,20 @@
 	   })
       }
 
+      // Function:データ変換
       function parseData(data) {
-        var keys = data.values[0];
-        var markerData1 = [];
+        const keys = data.values[0];
+        const parsemarkerData = [];
         data.values.forEach(function(value, i) {
           if (i > 0) {
-            var hash = {};
+            const hash = {};
             value.forEach(function(d, j) {
               hash[keys[j]] = d;
             });
-            markerData.push(hash);
+            parsemarkerData.push(hash);
           }
         });
-        return markerData;
+        return parsemarkerData;
       }
 
       function initMap() {
@@ -119,7 +120,6 @@
         request2.onload = async function () {
           var data2 = this.response;
           var markerData2 = parseData(data2);
-	  await sleep(1000);  
 	  setData2(markerData2);
         };
 	request2.send();
@@ -182,7 +182,6 @@
       }
 	    
       function setData2(mD2){
-	sidebar_html += '---<br />';
         for (var i = 0; i < mD2.length; i++) {
           var latitude = mD2[i]['緯度'];
           if (!latitude) { continue; }
@@ -212,7 +211,7 @@
         const tagmarkerData = [];
         let j = 0;
         for (let i = 0; i < markerData1.length; i++) {
-          if (tag === markerData1[i]['tag'].charAt(0)) {
+          if (tag === markerData1[i]['tag']) {
             tagmarkerData[j] = markerData1[i];
             j++;
           }
